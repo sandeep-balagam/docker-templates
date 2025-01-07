@@ -15,6 +15,9 @@ Run below script file to generate `docker.crt` and `docker.key` which will be us
 ## Init Database
 To import any SQL dump, place it under `.docker/mysql/init`. If multiple files are placed, imports are done in alphabetical order
 
+## Configure Database
+Update `core_config_data` table for `base_url`, `search/engine`
+
 ## Start Containers
 `docker compose up -d`
 
