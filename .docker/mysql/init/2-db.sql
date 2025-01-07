@@ -1,0 +1,1 @@
+-- Replace this with Magento DB dump to setup existing instance

@@ -13,7 +13,7 @@ Run below script file to generate `docker.crt` and `docker.key` which will be us
 `.docker/ssl/openssl_generate.sh`
 
 ## Init Database
-To import any SQL dump, place it under `.docker/mysql/init`. If multiple files are placed, imports are done in alphabetical order
+To import any SQL dump, place it under `.docker/mysql/init` replacing the `2-db.sql`. If multiple files are placed, imports are done in alphabetical order. Adjust the init files naming accordingly
 
 ## Configure Database
 Update `core_config_data` table for `base_url`, `search/engine`
@@ -41,3 +41,9 @@ Update `core_config_data` table for `base_url`, `search/engine`
 
 ## Login to a container as root user
 `docker exec -it -u 0 <container-name> bash`
+
+## Access Magento Website
+Browse https://localhost:8443/pub for frontend. For Admin, Browse https://localhost:8443/pub/admin
+
+## Access PhpMyAdmin
+Browse http://localhost:8336
