@@ -34,7 +34,7 @@ then
             --use-rewrites="1" \
             --backend-frontname="admin" \
             --session-save="files" \
-            --key="yMIxKP2jyoV8RJ867gtTia5qCF9MGRud" \
+            --key="your-crypt-key" \
             --search-engine="opensearch" \
             --opensearch-host="search" \
             --opensearch-port="9200" 

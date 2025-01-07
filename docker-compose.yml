@@ -1,18 +1,17 @@
-version: "1.0"
+version: "3.0"
 
 services:  
   app:
-    build: .docker/apache
+    build: 
+      context: .docker
+      dockerfile: apache/Dockerfile
     container_name: ${APP_PREFIX}-app
     ports:
       - "${APACHE_EXT_HTTP}:80"
       - "${APACHE_EXT_HTTPS}:443"
-    links:
-      - mysql
-      - search
     volumes:
       - ./magento:/var/www/html/
-
+  
   mysql:
     image: mysql:8.0
     container_name: ${APP_PREFIX}-mysql
@@ -22,6 +21,15 @@ services:
     volumes:
       - dbdata:/var/lib/mysql
       - ./.docker/mysql/init:/docker-entrypoint-initdb.d
+  
+  phpmyadmin:
+    image: phpmyadmin
+    container_name: ${APP_PREFIX}-phpmyadmin
+    ports:
+      - "${PHPMYADMIN_EXT_PORT}:80"
+    environment:
+      - PMA_HOST=mysql
+      - PMYSQL_ROOT_PASSWORD=
 
   search:
     image: opensearchproject/opensearch:2.5.0

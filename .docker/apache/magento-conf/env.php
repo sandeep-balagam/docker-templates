@@ -7,7 +7,7 @@ return [
         'date' => 'Wed, 06 May 2020 19:14:11 +0000'
     ],
     'crypt' => [
-        'key' => 'yMIxKP2jyoV8RJ867gtTia5qCF9MGRud'
+        'key' => 'your-crypt-key'
     ],
     'session' => [
         'save' => 'files'
@@ -76,7 +76,7 @@ return [
             ]
         ],
         'graphql' => [
-            'id_salt' => 'xelNlyvKpxRTIFpZth9Sm6A4Mkwuqam7'
+            'id_salt' => 'give-your-salt-from-installation'
         ]
     ],
     'lock' => [

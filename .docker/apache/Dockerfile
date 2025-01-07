@@ -1,4 +1,5 @@
-FROM php:8.1.22-apache
+# Replace with required version
+FROM php:8.2-apache
 
 # Update and install Dependencies
 RUN apt-get update \
@@ -13,13 +14,15 @@ RUN apt-get update \
     libxslt1-dev \
     libzip-dev \
     libmagickwand-dev --no-install-recommends \
+    libwebp-dev \
     ca-certificates \
     curl \
-    git
+    git \
+    nano
 
 # Configure Dependencies
 RUN docker-php-ext-configure \
-  gd --with-freetype=/usr/include/ --with-jpeg=/usr/include/
+  gd --with-freetype=/usr/include/ --with-jpeg=/usr/include/ --with-webp=/usr/include/
 
 # Install Dependencies
 RUN docker-php-ext-install \
@@ -37,8 +40,8 @@ RUN docker-php-ext-install \
 # Install Imagick extension
 RUN pecl install imagick && docker-php-ext-enable imagick
 
-# Install Dependencies
-RUN a2enmod rewrite
+# Enable Apache Modules
+RUN a2enmod rewrite ssl
 
 # Install Composer
 RUN curl -sS https://getcomposer.org/installer | \
@@ -49,10 +52,27 @@ RUN pecl install xdebug && docker-php-ext-enable xdebug
 
 RUN usermod -u 1000 www-data && groupmod -g 1000 www-data
 
-COPY php.ini /usr/local/etc/php/
-COPY magento-conf/env.php /usr/local/bin/
+COPY apache/php.ini /usr/local/etc/php/
+COPY apache/magento-conf/env.php /usr/local/bin/
 
-COPY start /usr/local/bin/
+# Add Permissions for cron as www-data user
+RUN chmod u+s /usr/sbin/cron
+RUN usermod -s /bin/bash www-data
+
+# Add Composer Cache
+RUN mkdir /var/www/.composer
+RUN chown www-data:www-data /var/www/.composer
+
+# Install SSL and enable
+COPY ssl/ /usr/local/share/ca-certificates/
+COPY ssl/docker.crt /etc/ssl/certs/ssl-cert-snakeoil.pem
+COPY ssl/docker.key /etc/ssl/private/ssl-cert-snakeoil.key
+RUN chmod 644 /etc/ssl/certs/ssl-cert-snakeoil.pem /etc/ssl/private/ssl-cert-snakeoil.key
+RUN chmod 755 /etc/ssl/private
+RUN update-ca-certificates
+RUN a2ensite default-ssl
+
+COPY apache/start /usr/local/bin/
 RUN ["chmod", "+x", "/usr/local/bin/start"]
 CMD ["/usr/local/bin/start"]
 
