@@ -6,7 +6,7 @@ To use with https and http2, you may need to generate SSL
 Create folder name - `magento`, place `composer.json` file in it with required magento version and start the containers
 
 ## To dockerise an existing magento application
-Pull the code into folder - `magento` and start the containers
+Pull the code into folder - `magento` before starting the containers
 
 ## Generate SSL
 Run below script file to generate `docker.crt` and `docker.key` which will be used by Apache. Adjust the CN and subjectAltName as required
